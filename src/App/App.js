@@ -8,6 +8,19 @@ class App extends Component {
     notes: []
   };
 
+  componentDidMount() {
+    // fake date loading from API call
+    setTimeout(() => this.setState(dummyStore), 600);
+  }
+
+  renderNavRoutes() {
+    const {folders, notes} = this.state;
+    return (
+        <>
+        </>
+    )
+  }
+
   render() {
     return (
         <div className='app'>
