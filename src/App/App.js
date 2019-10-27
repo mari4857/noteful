@@ -1,5 +1,5 @@
-import React, { Component }from 'react';
-import { Route, Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route, Link} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
@@ -11,8 +11,8 @@ import './App.css';
 
 class App extends Component {
   state = {
-    folders: [],
-    notes: []
+    notes: [],
+    folders: []
   };
 
   componentDidMount() {
@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   renderNavRoutes() {
-    const {folders, notes} = this.state;
+    const {notes, folders} = this.state;
     return (
       <>
         {['/', '/folder/:folderId'].map(path => (
@@ -56,50 +56,51 @@ class App extends Component {
   renderMainRoutes() {
     const {notes, folders} = this.state;
     return (
-        <>
-          {['/', '/folder/:folderId'].map(path => (
-              <Route
-                  exact
-                  key={path}
-                  path={path}
-                  render={routeProps => {
-                    const {folderId} = routeProps.match.params;
-                    const notesForFolder = getNotesForFolder(
-                        notes,
-                        folderId
-                    );
-                    return (
-                        <NoteListMain
-                            {...routeProps}
-                            notes={notesForFolder}
-                        />
-                    );
-                  }}
-              />
-          ))}
+      <>
+        {['/', '/folder/:folderId'].map(path => (
           <Route
-              path="/note/:noteId"
-              render={routeProps => {
-                const {noteId} = routeProps.match.params;
-                const note = findNote(notes, noteId);
-                return <NotePageMain {...routeProps} note={note} />;
-              }}
+            exact
+            key={path}
+            path={path}
+            render={routeProps => {
+              const {folderId} = routeProps.match.params;
+              const notesForFolder = getNotesForFolder(
+                notes,
+                folderId
+              );
+              return (
+                <NoteListMain
+                  {...routeProps}
+                  notes={notesForFolder}
+                />
+              );
+            }}
           />
-        </>
+        ))}
+        <Route
+          path="/note/:noteId"
+          render={routeProps => {
+            const {noteId} = routeProps.match.params;
+            const note = findNote(notes, noteId);
+            return <NotePageMain {...routeProps} note={note} />;
+          }}
+        />
+      </>
     );
   }
 
   render() {
     return (
-        <div className='app'>
-          <nav className='app-nav'>{this.renderNavRoutes()}</nav>
-          <header className='app-header'>
-            <h1>Noteful app header</h1>
-          </header>
-          <main className='app-main'>
-            <p>App main</p>
-          </main>
-        </div>
+      <div className="App">
+        <nav className="App__nav">{this.renderNavRoutes()}</nav>
+        <header className="App__header">
+          <h1>
+            <Link to="/">Noteful</Link>{' '}
+            <FontAwesomeIcon icon="check-double" />
+          </h1>
+        </header>
+        <main className="App__main">{this.renderMainRoutes()}</main>
+      </div>
     );
   }
 }
